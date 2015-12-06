@@ -1,29 +1,26 @@
-import koa from 'koa';
+import Koa from 'koa';
 import koaRouter from 'koa-router';
 import devHotMiddleware from './middlewares/devHotMiddleware';
 
 const router = koaRouter();
 
-router.get('/', function *main() {
-  this.body = `
+router.get('/', (ctx) => {
+  ctx.body = `
     <!doctype html>
     <html>
       <head>
         <title>Lib Boilerplate</title>
       </head>
       <body>
-        <h1>KKKK</h1>
         <div id='root'>
         </div>
-        <script src="${this.hot.bundle}"></script>
+        <script src="${ctx.hot.bundle}"></script>
       </body>
     </html>
   `;
 });
 
-const app = koa();
-// app.experimental = true;
-
+const app = new Koa();
 app
   .use(devHotMiddleware)
   .use(router.routes())

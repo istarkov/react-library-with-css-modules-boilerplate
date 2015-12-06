@@ -24,24 +24,24 @@ const koaDevExpress_ = webpackDevMiddleware(compiler, {
 });
 const koaHotExpress_ = webpackHotMiddleware(compiler);
 
-function * koaDevMiddleware(next) {
-  this.status = 200;
-  yield koaDevExpress_.bind(null, this.req, this.res);
-  yield next;
-}
+const koaDevMiddleware = async (ctx, next) => {
+  ctx.status = 200;
+  await new Promise(r => koaDevExpress_(ctx.req, ctx.res, r));
+  await next();
+};
 
-function * koaHotMiddleware(next) {
-  yield koaHotExpress_.bind(null, this.req, this.res);
-  yield next;
-}
+const koaHotMiddleware = async (ctx, next) => {
+  await new Promise(r => koaHotExpress_(ctx.req, ctx.res, r));
+  await next();
+};
 
-function * koaSetBundleName(next) {
-  this.hot = {
+const koaSetBundleName = async (ctx, next) => {
+  ctx.hot = {
     bundle: bundle_,
   };
 
-  yield next;
-}
+  await next();
+};
 
 const comp = compose([
   koaDevMiddleware,
