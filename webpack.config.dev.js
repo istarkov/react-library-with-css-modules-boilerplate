@@ -5,6 +5,7 @@ const createConfig = (callback) => ({
   devtool: 'eval',
   entry: [
     'webpack-hot-middleware/client?reload=true',
+    'babel-polyfill',
     './src/index',
   ],
   output: {

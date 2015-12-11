@@ -1,3 +1,4 @@
+import 'babel-polyfill'; // server code is not builded with webpack so include manually
 import Koa from 'koa';
 import koaRouter from 'koa-router';
 import devHotMiddlewares from './devHotMiddlewares';
