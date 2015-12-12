@@ -24,11 +24,21 @@ const createConfig = (callback) => ({
     },
   ],
   module: {
+    exprContextCritical: false,
     loaders: [{
       test: /\.js$/,
       loaders: ['babel'],
       include: path.join(__dirname, 'src'),
-    }],
+    }, {
+      test: /\.json$/,
+      loaders: ['json-loader'],
+    },
+    ],
+  },
+  node: {
+    fs: 'empty',
+    net: 'empty',
+    module: 'empty',
   },
 });
 
