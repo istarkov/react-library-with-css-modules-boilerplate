@@ -3,12 +3,23 @@ import compose from 'recompose/compose';
 import withState from 'recompose/withState';
 import mapPropsOnChange from 'recompose/mapPropsOnChange';
 
-import PlaygroundComponent from './PlaygroundComponent';
+import PlaygroundComponent from '../src/PlaygroundComponent';
+import styles from './TextareaExample.sass';
 
 const textareaExample = ({code, onCodeChange}) => (
-  <div>
-    <PlaygroundComponent code={code} />
-    <textarea value={code} onChange={onCodeChange} />
+  <div className={styles.main}>
+    <div className={styles.left}>
+      <h5 className={styles.header}>Textarea</h5>
+      <textarea className={styles.textarea} value={code} onChange={onCodeChange} />
+    </div>
+    <div className={styles.center}>
+      <h5 className={styles.header}>Component</h5>
+      <PlaygroundComponent code={code} />
+    </div>
+    <div className={styles.right}>
+      <h5 className={styles.header}>Log</h5>
+    sdsd
+    </div>
   </div>
 );
 

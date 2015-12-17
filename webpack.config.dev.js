@@ -6,7 +6,7 @@ const createConfig = (callback) => ({
   entry: [
     'webpack-hot-middleware/client?reload=true',
     'babel-polyfill',
-    './src/index',
+    './examples/index',
   ],
   output: {
     path: path.join(__dirname, 'dist'),
@@ -23,16 +23,40 @@ const createConfig = (callback) => ({
       });
     },
   ],
+  resolve: {
+    alias: {
+      'react-babel-playground': path.join(__dirname, 'src'),
+    },
+  },
   module: {
     exprContextCritical: false,
-    loaders: [{
-      test: /\.js$/,
-      loaders: ['babel'],
-      include: path.join(__dirname, 'src'),
-    }, {
-      test: /\.json$/,
-      loaders: ['json-loader'],
-    },
+    loaders: [
+      {
+        test: /\.js$/,
+        loaders: ['babel'],
+        include: [path.join(__dirname, 'src'), path.join(__dirname, 'examples')],
+      },
+      {
+        test: /\.json$/,
+        loaders: ['json-loader'],
+      },
+      {
+        test: /\.sass$/,
+        loaders: [
+          'style-loader',
+          'css-loader?modules&importLoaders=2&localIdentName=[name]__[local]--[hash:base64:5]',
+          'postcss-loader',
+          `sass-loader?precision=10&indentedSyntax=sass`,
+        ],
+      },
+      {
+        test: /\.css$/,
+        loaders: [
+          'style-loader',
+          'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]--[hash:base64:5]',
+          'postcss-loader',
+        ],
+      },
     ],
   },
   node: {

@@ -57,10 +57,7 @@ export const playgroundComponentHOC = compose(
   ),
   doOnPropsChange(
     ['code', 'scope'],
-    ({compile, code, scope}) => compile({
-      code,
-      scope,
-    })
+    ({compile, code, scope}) => compile({code, scope})
   )
 );
 
