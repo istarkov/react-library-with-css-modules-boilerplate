@@ -12,7 +12,8 @@ import debounce from 'lodash/function/debounce';
 import babelCompile from './babelCompile';
 import PlaygroundRenderer from './PlaygroundRenderer';
 
-export const playgroundComponent = ({component, error, busy /* , log */}) => (
+/*
+export const playgroundComponent = ({component, error, busy}) => (
   <div>
     <div>{busy ? 'busy' : 'done'}</div>
     <div>
@@ -24,19 +25,20 @@ export const playgroundComponent = ({component, error, busy /* , log */}) => (
     </div>
   </div>
 );
+*/
 
 // TODO MOVE debounceTime and scope to HOC fn
-export const playgroundComponentHOC = compose(
+const playground = (argDebounceTime = 500, argScope = {}) => compose(
   mapProps((props) => ({
     code: props.code,
     saveProps: props,
   })),
   defaultProps({
-    debounceTime: 400,
+    debounceTime: argDebounceTime,
     baseScope: {
       React,
     },
-    scope: {},
+    scope: argScope,
   }),
   mapPropsOnChange(
     ['scope'],
@@ -136,4 +138,6 @@ export const playgroundComponentHOC = compose(
   }))
 );
 
-export default playgroundComponentHOC(playgroundComponent);
+export default playground;
+
+// export default playgroundComponentHOC(playgroundComponent);
