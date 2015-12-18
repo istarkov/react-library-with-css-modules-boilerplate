@@ -1,3 +1,10 @@
+/*
+converts last jsx occurence
+`<MyComponent />`
+into this
+`return <MyComponent />;`
+*/
+
 export default ({types: t}) => {
   return {
     visitor: {

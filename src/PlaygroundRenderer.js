@@ -1,7 +1,9 @@
 
-// copypasted from
+// mainly copypasted from
 // https://github.com/facebook/relay/blob/master/website-prototyping-tools/RelayPlayground.js
-// I need this to reset internal react state after some errors
+// ReactDOM.render needed to intercept runtime errors.
+// Also without it, after some errors, internal react state could be broken
+// without ability to restore normal work
 
 import React, {Component, PropTypes} from 'react';
 import ReactDOM from 'react-dom';

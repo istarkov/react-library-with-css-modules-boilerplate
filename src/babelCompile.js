@@ -2,9 +2,9 @@ import { transform } from 'babel-core';
 import babelPresetEs2015 from 'babel-preset-es2015';
 import babelPresetReact from 'babel-preset-react';
 import babelPresetStage0 from 'babel-preset-stage-0';
-import babelLogPlugin from './babelLogPlugin';
-import babelReactDOMPlugin from './babelReactDOMPlugin';
-import babelLastExpression from './babelLastExpression';
+import babelLogPlugin from './babelPlugins/consoleLogWithStartEnd';
+import babelReactDOMPlugin from './babelPlugins/reactDOM2Return';
+import babelLastExpression from './babelPlugins/lastExpression2Return';
 import sortedIndex from 'lodash/array/sortedIndex';
 
 const babelCompile = ({code, scope}) => { // eslint-disable-line

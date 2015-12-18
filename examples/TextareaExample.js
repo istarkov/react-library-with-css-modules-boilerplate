@@ -13,11 +13,8 @@ const textareaExample = ({code, onCodeChange}) => (
       <textarea className={styles.textarea} value={code} onChange={onCodeChange} />
     </div>
     <div className={styles.item}>
-      <h5>Component {code.indexOf('HELLO')}</h5>
-      { code.indexOf('HELLO') > 0
-      ? <PlaygroundComponent code={code} />
-      : null
-      }
+      <h5>Component}</h5>
+      <PlaygroundComponent code={code} />
     </div>
   </div>
 );

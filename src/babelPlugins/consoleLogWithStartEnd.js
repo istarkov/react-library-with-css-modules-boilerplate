@@ -1,3 +1,9 @@
+/*
+coverts `console.log(...args)` calls into
+`__log__({start: x, end: y}, ...args)` calls,
+adding statement position as first argument
+so i could get line num
+*/
 export default ({types: t}) => {
   return {
     visitor: {
