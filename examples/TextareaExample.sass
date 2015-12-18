@@ -8,16 +8,15 @@
   border: none
   outline: none
   display: block
-.header
-  margin: 3px 0px
-  border-bottom: 1px solid #eee
 
-.left
-  padding: 0 0 0 10px
-.center
-  border-left: 1px solid #eee
-  flex: 1 0 auto
-
-.right
-  border-left: 1px solid #eee
-  flex: 1 0 auto
+.item
+  padding: 5px 0 0 5px
+  &:not(:first-child)
+    padding: 5px
+    border-left: 1px solid #eee
+    flex: 1 1 auto
+  >h5
+    margin: 0
+    padding: 0
+    border-bottom: 1px solid #eee
+    text-align: center

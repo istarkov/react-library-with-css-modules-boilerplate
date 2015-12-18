@@ -1,23 +1,38 @@
 import React from 'react';
 import defaultProps from 'recompose/defaultProps';
 import compose from 'recompose/compose';
+import withAttachedProps from 'recompose/withAttachedProps';
 import mapPropsOnChange from 'recompose/mapPropsOnChange';
+import mapProps from 'recompose/mapProps';
 import doOnPropsChange from './recompose/doOnPropsChange';
+import lifecycle from 'recompose/lifecycle';
 
 import withState from 'recompose/withState';
 import debounce from 'lodash/function/debounce';
 import babelCompile from './babelCompile';
+import PlaygroundRenderer from './PlaygroundRenderer';
 
-export const playgroundComponent = ({compiled}) => (
+export const playgroundComponent = ({component, error, busy /* , log */}) => (
   <div>
-    {compiled.component}
+    <div>{busy ? 'busy' : 'done'}</div>
+    <div>
+    {
+      error
+        ? <pre>{[error.type, error.message, error.error.stack].join('\n')}</pre>
+        : component
+    }
+    </div>
   </div>
 );
 
+// TODO MOVE debounceTime and scope to HOC fn
 export const playgroundComponentHOC = compose(
+  mapProps((props) => ({
+    code: props.code,
+    saveProps: props,
+  })),
   defaultProps({
-    code: '',
-    debounceTime: 0,
+    debounceTime: 400,
     baseScope: {
       React,
     },
@@ -34,11 +49,44 @@ export const playgroundComponentHOC = compose(
     'setCompiled',
     ({code, scope}) => babelCompile({code, scope})
   ),
+  withState(
+    'runtimeError',
+    'setRuntimeError',
+    undefined,
+  ),
+  withState(
+    'busy',
+    'setBusy',
+    false,
+  ),
+  withAttachedProps(
+    (getProps) => ({
+      onError(error) {
+        const {setRuntimeError} = getProps();
+        setRuntimeError({
+          type: 'runtime',
+          error,
+          message: error.message,
+        });
+      },
+      setBusy: debounce(
+        (val) => {
+          const {setBusy} = getProps();
+          setBusy(val);
+        },
+        2 * 1000 / 60, // two frame
+        {trailing: true}
+      ),
+    })
+  ),
   mapPropsOnChange(
     [],
-    ({setCompiled, debounceTime}) => ({
+    ({setCompiled, setBusy, debounceTime}) => ({
       compile: debounce(
-        ({code, scope}) => setCompiled(babelCompile({code, scope})),
+        ({code, scope}) => {
+          setBusy(false);
+          setCompiled(babelCompile({code, scope}));
+        },
         debounceTime,
         {trailing: true}
       ),
@@ -49,16 +97,43 @@ export const playgroundComponentHOC = compose(
     })
   ),
   mapPropsOnChange(
-    ['compiled'],
-    ({...props, uidGen}) => ({
+    ['compiled', 'runtimeError'],
+    ({...props, uidGen, compiled, runtimeError}) => ({
       ...props,
       uid: uidGen(),
+      error: runtimeError,
+      ...compiled,
+    })
+  ),
+  mapPropsOnChange(
+    ['component'],
+    ({component, error, onError}) => ({
+      component: error
+       ? undefined
+       : <PlaygroundRenderer onError={onError}>{component}</PlaygroundRenderer>,
     })
   ),
   doOnPropsChange(
     ['code', 'scope'],
-    ({compile, code, scope}) => compile({code, scope})
-  )
+    ({compile, code, scope, setRuntimeError, setBusy}) => {
+      setRuntimeError(undefined);
+      setBusy(true);
+      compile({code, scope});
+    }
+  ),
+  lifecycle(
+    () => {},
+    ({props: {compile, setBusy}}) => {
+      compile.cancel();
+      setBusy.cancel();
+    }
+  ),
+  mapProps(({saveProps, component, error, busy}) => ({
+    ...saveProps,
+    component,
+    error,
+    busy,
+  }))
 );
 
 export default playgroundComponentHOC(playgroundComponent);

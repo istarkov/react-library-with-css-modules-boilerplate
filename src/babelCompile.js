@@ -4,6 +4,7 @@ import babelPresetReact from 'babel-preset-react';
 import babelPresetStage0 from 'babel-preset-stage-0';
 import babelLogPlugin from './babelLogPlugin';
 import babelReactDOMPlugin from './babelReactDOMPlugin';
+import babelLastExpression from './babelLastExpression';
 import sortedIndex from 'lodash/array/sortedIndex';
 
 const babelCompile = ({code, scope}) => { // eslint-disable-line
@@ -27,11 +28,14 @@ const babelCompile = ({code, scope}) => { // eslint-disable-line
         plugins: [
           babelLogPlugin,
           babelReactDOMPlugin,
+          babelLastExpression,
         ],
+        retainLines: true,
       }
     ).code;
 
-    const component = eval(codeE)(localScope);  // eslint-disable-line
+    const evalCode = eval(codeE); // eslint-disable-line
+    const component = evalCode(localScope);
 
     const {lines} = codeStr
       .split('\n')
@@ -51,15 +55,19 @@ const babelCompile = ({code, scope}) => { // eslint-disable-line
         args,
       }));
 
-    console.log('lineLogNumbers', lineLogNumbers);
 
     return {
       component,
-      log,
+      log: lineLogNumbers,
     };
   } catch (error) {
     return {
-      error,
+      error: {
+        line: error._babel === true ? error.loc.line : undefined,
+        error,
+        message: error.codeFrame || error.message,
+        type: error._babel === true ? 'syntax' : 'runtime',
+      },
       log,
     };
   }
