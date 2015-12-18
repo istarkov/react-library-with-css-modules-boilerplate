@@ -66,7 +66,7 @@ const babelCompile = ({code, scope}) => { // eslint-disable-line
         line: error._babel === true ? error.loc.line : undefined,
         error,
         message: error.codeFrame || error.message,
-        type: error._babel === true ? 'syntax' : 'runtime',
+        type: error._babel === true ? 'syntax' : 'eval',
       },
       log,
     };

@@ -6,7 +6,7 @@ import mapPropsOnChange from 'recompose/mapPropsOnChange';
 import playground from 'react-babel-playground';
 import styles from './TextareaExample.sass';
 
-const textareaExample = ({code, onCodeChange, component, error, busy}) => (
+const textareaExample = ({code, onCodeChange, component, error, busy, log}) => (
   <div className={styles.main}>
     <div className={styles.item}>
       <h5>Textarea</h5>
@@ -17,27 +17,36 @@ const textareaExample = ({code, onCodeChange, component, error, busy}) => (
       <div>
         {
           error
-            ? <pre>{[error.type, error.message, error.error.stack].join('\n')}</pre>
+            ? <pre>
+              {
+                [
+                  error.type,
+                  error.message,
+                  (error.error.stack || '').split('\n')[1],
+                ].join('\n')
+              }
+            </pre>
             : component
         }
       </div>
     </div>
+    <div className={styles.item}>
+      <h5>Log</h5>
+      <pre>
+        {JSON.stringify(log)}
+      </pre>
+    </div>
   </div>
 );
 
-const CODE = `
-const MyComponent = ({title}) => <div>{title}</div>;
-console.log('HELLO WORLD');
-<MyComponent title="jopa" />;
-`;
-
 export default compose(
-  withState('code', 'setCode', CODE),
+  withState('code', 'setCode', ({code}) => code || ''),
   mapPropsOnChange(
     ['setCode'],
     ({setCode}) => ({
       onCodeChange: (e) => setCode(e.target.value),
     })
   ),
+  // 500 default debounce time, could be overwritten
   playground(500)
 )(textareaExample);

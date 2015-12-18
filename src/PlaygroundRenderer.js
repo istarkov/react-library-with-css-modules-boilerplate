@@ -9,7 +9,7 @@ import React, {Component, PropTypes} from 'react';
 import ReactDOM from 'react-dom';
 import defer from 'lodash/function/defer';
 
-export default class PlaygroundRenderer extends Component {
+class PlaygroundRenderer extends Component {
   static propTypes = {
     children: PropTypes.any,
     onError: PropTypes.func,
@@ -51,3 +51,5 @@ export default class PlaygroundRenderer extends Component {
     return <div ref={this._setRef} />;
   }
 }
+
+export default PlaygroundRenderer;
