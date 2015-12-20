@@ -24,7 +24,11 @@ export default class App extends Component {
   render() {
     return (
       <div style={{padding: 10}}>
-        <TextareaExample debounceTime={0} code={CODE}/>
+        <TextareaExample
+          // debounceTime={0}
+          // scope={{x: 2}}
+          code={CODE}
+        />
       </div>
     );
   }

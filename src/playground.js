@@ -12,6 +12,7 @@ import doOnPropsChange from './recompose/doOnPropsChange';
 import debounce from 'lodash/function/debounce';
 import babelCompile from './babelCompile';
 import PlaygroundRenderer from './PlaygroundRenderer';
+import debounceBuffer from './utils/debounceBuffer';
 
 const playground = (argDebounceTime = 500, argScope = {}) => compose(
   setPropTypes({
@@ -29,23 +30,22 @@ const playground = (argDebounceTime = 500, argScope = {}) => compose(
     baseScope: {
       React,
     },
-    scope: argScope,
   }),
   mapPropsOnChange(
     ['scope'],
     ({scope, baseScope}) => ({
-      scope: {...baseScope, ...scope},
+      scope: {...baseScope, ...argScope, ...scope},
     })
-  ),
-  withState(
-    'compiled',
-    'setCompiled',
-    ({code, scope}) => babelCompile({code, scope})
   ),
   withState(
     'runtimeError',
     'setRuntimeError',
     undefined,
+  ),
+  withState(
+    'log',
+    'setLog',
+    [],
   ),
   withState(
     'busy',
@@ -70,16 +70,28 @@ const playground = (argDebounceTime = 500, argScope = {}) => compose(
         2 * 1000 / 60, // two frame
         {trailing: true}
       ),
+      onLog: debounceBuffer(
+        (log) => getProps().setLog((prev) => [...prev, ...log]),
+        0,
+        {trailing: true}
+      ),
     })
+  ),
+  withState(
+    'compiled',
+    'setCompiled',
+    ({code, scope, onLog}) => babelCompile({code, scope: {...scope, __log__: onLog}})
   ),
   mapPropsOnChange(
     [],
-    ({setCompiled, setBusy, debounceTime, setRuntimeError}) => ({
+    ({setCompiled, onLog, setLog, setBusy, debounceTime, setRuntimeError}) => ({
       compile: debounce(
         ({code, scope}) => {
           setBusy(false);
+          onLog.cancel();
           unstable_batchedUpdates(() => {
-            setCompiled(babelCompile({code, scope}));
+            setLog([]);
+            setCompiled(babelCompile({code, scope: {...scope, __log__: onLog}}));
             setRuntimeError(undefined);
           });
         },
@@ -119,9 +131,10 @@ const playground = (argDebounceTime = 500, argScope = {}) => compose(
   ),
   lifecycle(
     () => {},
-    ({props: {compile, setBusy}}) => {
+    ({props: {compile, setBusy, onLog}}) => {
       compile.cancel();
       setBusy.cancel();
+      onLog.cancel();
     }
   ),
   // restore original component props

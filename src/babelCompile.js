@@ -8,9 +8,7 @@ import babelLastExpression from './babelPlugins/lastExpression2Return';
 import sortedIndex from 'lodash/array/sortedIndex';
 
 const babelCompile = ({code, scope}) => { // eslint-disable-line
-  const log = [];
-
-  const codeStr = `({${[...Object.keys(scope), '__log__'].join(', ')}}) => {\n${code}\n}`;
+  const codeStr = `({${[...Object.keys(scope)].join(', ')}}) => {\n${code}\n}`;
 
   const {lines} = codeStr
     .split('\n')
@@ -26,7 +24,7 @@ const babelCompile = ({code, scope}) => { // eslint-disable-line
 
   const localScope = {
     ...scope,
-    __log__: ({end}, ...args) => log.push({
+    __log__: ({end}, ...args) => scope.__log__({
       line: sortedIndex(lines, end) - 1,
       args,
     }),
@@ -55,7 +53,6 @@ const babelCompile = ({code, scope}) => { // eslint-disable-line
 
     return {
       component,
-      log,
     };
   } catch (error) {
     return {
@@ -65,7 +62,6 @@ const babelCompile = ({code, scope}) => { // eslint-disable-line
         message: error.codeFrame || error.message,
         type: error._babel === true ? 'syntax' : 'eval',
       },
-      log,
     };
   }
 };
