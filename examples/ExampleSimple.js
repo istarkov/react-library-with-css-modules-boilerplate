@@ -15,7 +15,7 @@ console.log(\`Scoped var: \${scopedExampleVar}\`);
 const DEBOUNCE_WAIT = 500;
 
 // to support hmr make it as component
-export default class App extends Component {
+export default class ExampleSimple extends Component {
   state = {code: CODE, debounce: true}
 
   onChange = ({target: {value}}) => this.setState({code: value});

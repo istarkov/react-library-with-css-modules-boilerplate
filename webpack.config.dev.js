@@ -57,6 +57,7 @@ const createConfig = (callback) => ({
           'postcss-loader',
         ],
         include: [path.join(__dirname, 'src'), path.join(__dirname, 'examples')],
+        exclude: [path.join(__dirname, 'examples', 'assets')],
       },
       {
         test: /\.css$/,
@@ -65,7 +66,7 @@ const createConfig = (callback) => ({
           'css-loader',
           'postcss-loader',
         ],
-        exclude: [path.join(__dirname, 'src'), path.join(__dirname, 'examples')],
+        include: [path.join(__dirname, 'node_modules'), path.join(__dirname, 'examples', 'assets')],
       },
       {
         test: /\.gif$/,
