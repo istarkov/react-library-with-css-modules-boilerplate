@@ -5,7 +5,7 @@ import devHotMiddlewares from './devHotMiddlewares';
 
 const router = koaRouter();
 
-router.get(['/', '/test'], (ctx) => {
+router.get(['/', '/simple'], (ctx) => {
   ctx.body = (({bundle}) => `
     <!doctype html>
     <html>

@@ -83,7 +83,7 @@ const playground = (argDebounceTime = 500, argScope = {}) => compose(
     ({code, scope, onLog}) => babelCompile({code, scope: {...scope, __log__: onLog}})
   ),
   mapPropsOnChange(
-    [],
+    ['debounceTime'],
     ({setCompiled, onLog, setLog, setBusy, debounceTime, setRuntimeError}) => ({
       compile: debounce(
         ({code, scope}) => {

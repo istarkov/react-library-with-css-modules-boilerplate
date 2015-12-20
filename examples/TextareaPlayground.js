@@ -10,7 +10,7 @@ import textareaStyles from './TextareaPlayground.sass';
 import combineCodeAndLog from './utils/combineCodeAndLog';
 import Highlight from './Highlight';
 
-const textareaExample = ({
+const textareaPlayground = ({
   styles, // css modules styles
   code, onCodeChange, // withState props
   component, error, busy, log, // playground HOC props
@@ -25,8 +25,8 @@ const textareaExample = ({
       />
     </div>
     <div className={styles.item}>
-      <h3>Component</h3>
-      <div className={cx({[styles.busy]: true, [styles.visible]: busy})}></div>
+      <h3>Component <div className={cx({[styles.busy]: true, [styles.visible]: busy})}></div></h3>
+
       <div className={styles.component}>
         {
           error
@@ -37,6 +37,7 @@ const textareaExample = ({
     </div>
     <div className={styles.item}>
       <h3>Code with console.log output</h3>
+      <div className={cx({[styles.busy]: true, [styles.visible]: busy})}></div>
       <Highlight styles={styles}>
         {combineCodeAndLog(code, log)}
       </Highlight>
@@ -60,4 +61,4 @@ export default compose(
   ),
   // 500 default debounce time, could be overwritten
   playground(DEFAULT_DEBOUNCE_TIME)
-)(textareaExample);
+)(textareaPlayground);

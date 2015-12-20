@@ -1,0 +1,37 @@
+.main
+  display: flex
+  border: 1px solid #eee
+  font-size: 1em
+
+.item
+  display: flex
+  position: relative
+  flex: 1
+  flex-direction: column
+  &:not(:first-child)
+    border-left: 1px solid #eee
+  >h5
+    margin: 0
+    padding: 5px 20px 0 20px
+    border-bottom: 1px solid #eee
+    // text-align: center
+    line-height: 20px
+    >span
+      vertical-align: top
+      padding-right: 5px
+  pre
+    margin-bottom: 0
+    margin-top: 0
+
+.busy
+  display: inline-block
+  width: 20px
+  height: 20px
+  background-size: 80px
+  background-repeat: no-repeat
+  background-position: center center
+  background-image: url('./assets/spinner.gif')
+  visibility: hidden
+
+.visible
+  visibility: visible

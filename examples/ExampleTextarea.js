@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import TextareaPlayground from './TextareaPlayground.js';
+import TextareaPlayground from './TextareaPlayground';
 
 const CODE = `const MyComponent = ({title, children}) => (
   console.log(\`Title is \${title}\`),
