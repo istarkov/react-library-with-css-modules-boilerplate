@@ -13,7 +13,11 @@ const CODE = `const MyComponent = ({title, children}) => (
   </div>
 );
 
-console.log('hello');
+for(let i = 0; i !== 3; ++i) {
+  console.log('hello', i);
+}
+
+// setTimeout(() => console.log('delayed log'), 1000); // uncomment me
 
 <MyComponent title="Wow">
   It works!

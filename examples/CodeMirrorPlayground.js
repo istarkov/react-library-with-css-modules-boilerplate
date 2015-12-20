@@ -19,6 +19,7 @@ const codemirrorPlayground = ({
   <div className={styles.main}>
     <div className={styles.item}>
       <h3>Code</h3>
+      <div className={cx({[styles.busy]: true, [styles.visible]: busy})}></div>
       <CodeMirror
         className={styles.textarea}
         value={code}
@@ -27,8 +28,8 @@ const codemirrorPlayground = ({
       />
     </div>
     <div className={styles.item}>
-      <h3>Component <div className={cx({[styles.busy]: true, [styles.visible]: busy})}></div></h3>
-
+      <h3>Component</h3>
+      <div className={cx({[styles.busy]: true, [styles.visible]: busy})}></div>
       <div className={styles.component}>
         {
           error
@@ -37,15 +38,6 @@ const codemirrorPlayground = ({
         }
       </div>
     </div>
-    {/*
-    <div className={styles.item}>
-      <h3>Code with console.log output</h3>
-      <div className={cx({[styles.busy]: true, [styles.visible]: busy})}></div>
-      <Highlight styles={styles}>
-        {combineCodeAndLog(code, log)}
-      </Highlight>
-    </div>
-    */}
   </div>
 );
 
