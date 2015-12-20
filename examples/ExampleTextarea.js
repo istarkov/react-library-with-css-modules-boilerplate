@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import TextareaExample from './TextareaExample.js';
+import TextareaPlayground from './TextareaPlayground.js';
 
 const CODE = `const MyComponent = ({title, children}) => (
   console.log(\`Title is \${title}\`),
@@ -19,17 +19,15 @@ console.log('hello');
   It works!
 </MyComponent>`;
 
-
+// to support hmr make it as component
 export default class App extends Component {
   render() {
     return (
-      <div style={{padding: 10}}>
-        <TextareaExample
-          // debounceTime={0}
-          // scope={{x: 2}}
-          code={CODE}
-        />
-      </div>
+      <TextareaPlayground
+        // debounceTime={0}
+        // scope={{x: 2}}
+        code={CODE}
+      />
     );
   }
 }

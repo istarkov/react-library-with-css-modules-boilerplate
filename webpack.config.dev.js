@@ -67,7 +67,11 @@ const createConfig = (callback) => ({
         ],
         exclude: [path.join(__dirname, 'src'), path.join(__dirname, 'examples')],
       },
-
+      {
+        test: /\.gif$/,
+        loaders: ['url-loader'],
+        include: [path.join(__dirname, 'examples')],
+      },
     ],
   },
   node: {

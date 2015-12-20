@@ -1,0 +1,64 @@
+.main
+  display: flex
+  border: 1px solid #eee
+  font-size: 0.75em
+
+.item
+  padding: 0 0 0 0
+  display: flex
+  position: relative
+  flex-direction: column
+  &:not(:first-child)
+    padding: 0
+    border-left: 1px solid #eee
+    flex: 1
+  >h3
+    margin: 0
+    padding: 5px
+    border-bottom: 1px solid #eee
+    text-align: center
+
+
+.busy
+  position: absolute
+  right: 3px
+  top: 3px
+  width: 20px
+  height: 20px
+  background-size: 80px
+  background-repeat: no-repeat
+  background-position: center center
+  background-image: url('./assets/spinner.gif')
+  visibility: hidden
+
+.visible
+  visibility: visible
+
+.textarea
+  min-width: 400px
+  height: 250px
+  border: none
+  outline: none
+  display: block
+  flex: 1
+  margin: 5px 0 0 5px
+
+.component
+  flex: 1
+  display: flex
+  flex-direction: column
+  >div
+    flex: 1
+    padding: 5px
+    margin: 0
+  >pre
+    flex: 1
+    padding: 5px
+    margin: 0
+    background-color: red
+    color: white
+
+.highlight
+  margin-bottom: 0
+  margin-top: 0
+  flex: 1

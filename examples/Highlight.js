@@ -6,13 +6,13 @@ import withAttachedProps from 'recompose/withAttachedProps';
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
 import doOnPropsChange from './recompose/doOnPropsChange';
 import debounce from 'lodash/function/debounce';
-
+import highlightStyles from './Highlight.sass';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/idea.css';
 
-export const highlight = ({code}) => (
+export const highlight = ({code, styles}) => (
   <pre
-    className={'hljs'}
+    className={`hljs ${styles.highlight}`}
     dangerouslySetInnerHTML={{
       __html: hljs.highlightAuto(
         code
@@ -24,6 +24,7 @@ export const highlight = ({code}) => (
 export default compose(
   defaultProps({
     debounceTime: 2 * 1000 / 60, // +- two frame
+    styles: highlightStyles,
   }),
   withState('code', 'setCode', ({children}) => children),
   withAttachedProps((getProps) => ({

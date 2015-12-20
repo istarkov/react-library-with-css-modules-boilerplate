@@ -2,6 +2,17 @@ import 'babel-polyfill';
 import 'normalize.css';
 import React from 'react';
 import { render } from 'react-dom';
-import App from './App';
+import ExampleTextarea from './ExampleTextarea';
 
-render(<App />, document.getElementById('root'));
+import { Router, Route } from 'react-router';
+import createBrowserHistory from 'history/lib/createBrowserHistory';
+
+const history = createBrowserHistory();
+
+render(
+  <Router history={history}>
+    <Route path="/" component={ExampleTextarea} />
+    <Route path="/test" component={ExampleTextarea} />
+  </Router>,
+  document.getElementById('root')
+);
