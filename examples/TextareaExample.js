@@ -5,15 +5,22 @@ import mapPropsOnChange from 'recompose/mapPropsOnChange';
 
 import playground from 'react-babel-playground';
 import styles from './TextareaExample.sass';
+import combineCodeAndLog from './utils/combineCodeAndLog';
+import 'highlight.js/styles/idea.css';
+import hljs from 'highlight.js';
 
 const textareaExample = ({code, onCodeChange, component, error, busy, log}) => (
   <div className={styles.main}>
     <div className={styles.item}>
-      <h5>Textarea</h5>
-      <textarea className={styles.textarea} value={code} onChange={onCodeChange} />
+      <h3>Textarea</h3>
+      <textarea
+        className={styles.textarea}
+        value={code}
+        onChange={onCodeChange}
+      />
     </div>
     <div className={styles.item}>
-      <h5>Component {busy ? 'busy' : 'done'}</h5>
+      <h3>Component {busy ? 'busy' : 'done'}</h3>
       <div>
         {
           error
@@ -31,10 +38,14 @@ const textareaExample = ({code, onCodeChange, component, error, busy, log}) => (
       </div>
     </div>
     <div className={styles.item}>
-      <h5>Log</h5>
-      <pre>
-        {JSON.stringify(log)}
-      </pre>
+      <h3>Code with console.log output</h3>
+      <pre
+        className={'hljs'}
+        dangerouslySetInnerHTML={{
+          __html: hljs.highlightAuto(
+            combineCodeAndLog(code, log)
+          ).value,
+        }} />
     </div>
   </div>
 );

@@ -56,7 +56,18 @@ const createConfig = (callback) => ({
           'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]--[hash:base64:5]',
           'postcss-loader',
         ],
+        include: [path.join(__dirname, 'src'), path.join(__dirname, 'examples')],
       },
+      {
+        test: /\.css$/,
+        loaders: [
+          'style-loader',
+          'css-loader',
+          'postcss-loader',
+        ],
+        exclude: [path.join(__dirname, 'src'), path.join(__dirname, 'examples')],
+      },
+
     ],
   },
   node: {

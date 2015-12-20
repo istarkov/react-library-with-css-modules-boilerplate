@@ -9,12 +9,28 @@ import sortedIndex from 'lodash/array/sortedIndex';
 
 const babelCompile = ({code, scope}) => { // eslint-disable-line
   const log = [];
+
+  const codeStr = `({${[...Object.keys(scope), '__log__'].join(', ')}}) => {\n${code}\n}`;
+
+  const {lines} = codeStr
+    .split('\n')
+    .reduce(
+      (r, line) => {
+        const lastSymNum = r.pos + line.length + 1;
+        r.lines.push(lastSymNum);
+        r.pos = lastSymNum;
+        return r;
+      },
+      {pos: 0, lines: []}
+    );
+
   const localScope = {
     ...scope,
-    __log__: (...args) => (log.push(args)),
+    __log__: ({end}, ...args) => log.push({
+      line: sortedIndex(lines, end) - 1,
+      args,
+    }),
   };
-
-  const codeStr = `({${Object.keys(localScope).join(', ')}}) => {\n${code}\n}`;
 
   try {
     const codeE = transform(
@@ -37,28 +53,9 @@ const babelCompile = ({code, scope}) => { // eslint-disable-line
     const evalCode = eval(codeE); // eslint-disable-line
     const component = evalCode(localScope);
 
-    const {lines} = codeStr
-      .split('\n')
-      .reduce(
-        (r, line) => {
-          const lastSymNum = r.pos + line.length + 1;
-          r.lines.push(lastSymNum);
-          r.pos = lastSymNum;
-          return r;
-        },
-        {pos: 0, lines: []}
-      );
-
-    const lineLogNumbers = log
-      .map(([{end}, ...args]) => ({
-        line: sortedIndex(lines, end) - 1,
-        args,
-      }));
-
-
     return {
       component,
-      log: lineLogNumbers,
+      log,
     };
   } catch (error) {
     return {

@@ -1,11 +1,23 @@
 import React, { Component } from 'react';
 import TextareaExample from './TextareaExample.js';
 
-const CODE = `// example
-const MyComponent = ({title}) => <div>{title}</div>;
+const CODE = `const MyComponent = ({title, children}) => (
+  console.log(\`Title is \${title}\`),
+  <div>
+    <h1>
+      {title}
+    </h1>
+    <p>
+      {children}
+    </p>
+  </div>
+);
+
 console.log('hello');
-<MyComponent title="world" />;
-`;
+
+<MyComponent title="Wow">
+  It works!
+</MyComponent>`;
 
 
 export default class App extends Component {

@@ -35,7 +35,9 @@ class PlaygroundRenderer extends Component {
 
   _update = () => {
     try {
-      ReactDOM.render(React.Children.only(this.props.children), this.container_);
+      if (this.props.children) {
+        ReactDOM.render(React.Children.only(this.props.children), this.container_);
+      }
     } catch (e) {
       if (this.props.onError) {
         this.props.onError(e);
