@@ -76,7 +76,7 @@ class CodeMirror extends Component {
         )
         .forEach(([line, comment]) => {
           const msg = document.createElement('div');
-          msg.className = 'cm-s-neoice cm-comment';
+          msg.className = 'cm-s-neoice cm-comment cm-pre-wrap';
           const pre = document.createElement('pre');
           const codeLine = codeLines[line];
           const paddingLength = codeLine.length - codeLine.replace(/^\s+/, '').length;
