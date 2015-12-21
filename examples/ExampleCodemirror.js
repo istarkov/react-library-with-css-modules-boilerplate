@@ -7,12 +7,8 @@ import CodeMirrorPlayground from './CodeMirrorPlayground';
 const CODE = `const MyComponent = ({title, children}) => (
   console.log(\`Title is '\${title}'\`),
   <div>
-    <h1>
-      {title}
-    </h1>
-    <div>
-      {children}
-    </div>
+    <h1>{title}</h1>
+    <div>{children}</div>
   </div>
 );
 
@@ -35,6 +31,7 @@ class ExampleCodeMirror extends Component {
     debounce: PropTypes.bool,
     debounceTime: PropTypes.number,
     toggleDebounce: PropTypes.func,
+    toggleText: PropTypes.string,
   }
 
   render() {
@@ -42,6 +39,7 @@ class ExampleCodeMirror extends Component {
       debounce,
       debounceTime,
       toggleDebounce,
+      toggleText,
     } = this.props;
 
     return (
@@ -51,13 +49,13 @@ class ExampleCodeMirror extends Component {
         </p>
         <p>
           All playground operations could be debounced with some
-          wait, now it equals to {debounceTime} (look at busy spinner
-          when you type if wait is not 0)
+          wait, now it equals to {debounceTime} <i>(look at busy spinner
+          when you type if wait is not 0)</i>
         </p>
         <p>
           <label>
             <input type="checkbox" checked={debounce} onChange={toggleDebounce} />
-            &nbsp;Toggle debounce wait
+            &nbsp;Turn {toggleText} debounce wait
           </label>
         </p>
         <CodeMirrorPlayground
@@ -77,5 +75,6 @@ export default compose(
     ...props,
     toggleDebounce: () => setDebounce((v) => !v),
     debounceTime: debounce ? 500 : 0,
+    toggleText: debounce ? 'off' : 'on',
   })),
 )(ExampleCodeMirror);

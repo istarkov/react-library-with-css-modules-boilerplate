@@ -6,7 +6,7 @@ import defaultProps from 'recompose/defaultProps';
 import codemirror from 'codemirror';
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/lib/codemirror.css';
-import './assets/neoice.css';
+import './assets/neoice.css'; // use mine to normal jsx colors
 
 const CODE_EDITOR_OPTIONS = { // thank you relay playground
   extraKeys: {
