@@ -19,7 +19,7 @@ const simplePlayground = ({
       </h5>
       {
         error
-        ? <pre>{[error.type, error.message, '', error.error.stack].join('\n')}</pre>
+        ? <pre>{[error.type, error.message, '', error.nativeError.stack].join('\n')}</pre>
         : <Highlight>{combineCodeAndLog(code, log)}</Highlight>
       }
     </div>

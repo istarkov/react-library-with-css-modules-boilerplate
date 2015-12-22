@@ -1,3 +1,6 @@
+/* @flow */
+import type {Playground} from './types';
+
 import React, { PropTypes } from 'react';
 import { unstable_batchedUpdates } from 'react-dom'; // eslint-disable-line
 import defaultProps from 'recompose/defaultProps';
@@ -10,11 +13,11 @@ import withAttachedProps from 'recompose/withAttachedProps';
 import withState from 'recompose/withState';
 import doOnPropsChange from './recompose/doOnPropsChange';
 import debounce from 'lodash/function/debounce';
-import babelCompile from './babelCompile';
+import compile from './compile';
 import PlaygroundRenderer from './PlaygroundRenderer';
 import debounceBuffer from './utils/debounceBuffer';
 
-const playground = (argDebounceTime = 500, argScope = {}) => compose(
+const playground: Playground = (argDebounceTime = 500, argScope = {}) => compose(
   setPropTypes({
     code: PropTypes.string.isRequired,
   }),
@@ -56,11 +59,7 @@ const playground = (argDebounceTime = 500, argScope = {}) => compose(
     (getProps) => ({
       onError(error) {
         const {setRuntimeError} = getProps();
-        setRuntimeError({
-          type: 'runtime',
-          error,
-          message: error.message,
-        });
+        setRuntimeError(error);
       },
       setBusy: debounce(
         (val) => {
@@ -80,18 +79,18 @@ const playground = (argDebounceTime = 500, argScope = {}) => compose(
   withState(
     'compiled',
     'setCompiled',
-    ({code, scope, onLog}) => babelCompile({code, scope: {...scope, __log__: onLog}})
+    ({code, scope, onLog}) => compile({code, scope: {...scope, __log__: onLog}})
   ),
   mapPropsOnChange(
     ['debounceTime'],
     ({setCompiled, onLog, setLog, setBusy, debounceTime, setRuntimeError}) => ({
-      compile: debounce(
+      compileDebounced: debounce(
         ({code, scope}) => {
           setBusy(false);
           onLog.cancel();
           unstable_batchedUpdates(() => {
             setLog([]);
-            setCompiled(babelCompile({code, scope: {...scope, __log__: onLog}}));
+            setCompiled(compile({code, scope: {...scope, __log__: onLog}}));
             setRuntimeError(undefined);
           });
         },
@@ -124,15 +123,15 @@ const playground = (argDebounceTime = 500, argScope = {}) => compose(
   ),
   doOnPropsChange(
     ['code', 'scope'],
-    ({compile, code, scope, setBusy}) => {
+    ({compileDebounced, code, scope, setBusy}) => {
       setBusy(true);
-      compile({code, scope});
+      compileDebounced({code, scope});
     }
   ),
   lifecycle(
     () => {},
-    ({props: {compile, setBusy, onLog}}) => {
-      compile.cancel();
+    ({props: {compileDebounced, setBusy, onLog}}) => {
+      compileDebounced.cancel();
       setBusy.cancel();
       onLog.cancel();
     }

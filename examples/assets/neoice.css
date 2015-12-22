@@ -17,11 +17,14 @@
 .cm-s-neoice .cm-string { color:#b35e14; }
 .cm-s-neoice .cm-variable, .cm-string-2, .cm-s-neoice .cm-qualifier { color:#047d65; }
 .cm-s-neoice .cm-pre-wrap { white-space: pre-wrap; }
+.cm-s-neoice .cm-error { background-color: red; color: white;}
 
-/* Editor styling */
+.cm-s-neoice .cm-pre-wrap .pre {
+  padding: 0;
+}
 
-.cm-s-neoice pre {
-  padding:0;
+.cm-s-neoice .CodeMirror-linewidget {
+  padding: 0 0 0 4px
 }
 
 .cm-s-neoice .CodeMirror-gutters {

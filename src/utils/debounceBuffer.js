@@ -1,7 +1,14 @@
+/* @flow */
+
 import debounce from 'lodash/function/debounce';
 
+// why flow, just to play
+type CallFn = {(obj: any): void, cancel: () => void};
+type CallFnBuffered = (buffer: Array<any>) => void;
+type DebounceBuffer = (fn: CallFnBuffered, wait: number, options: any) => CallFn;
+
 // work as debounce but buffers internal args
-export default (fn, wait, options) => {
+const debounceBuffer: DebounceBuffer = (fn, wait, options) => {
   let argsBuffer_ = [];
 
   const callDone_ = debounce(() => {
@@ -10,7 +17,12 @@ export default (fn, wait, options) => {
   }, wait, options);
 
   const fnCallWrapper = (...args) => {
-    argsBuffer_.push(...args);
+    if (args.length > 1) {
+      // simpler to parse
+      argsBuffer_.push(args);
+    } else {
+      argsBuffer_.push(...args);
+    }
     callDone_();
   };
 
@@ -21,3 +33,5 @@ export default (fn, wait, options) => {
 
   return fnCallWrapper;
 };
+
+export default debounceBuffer;

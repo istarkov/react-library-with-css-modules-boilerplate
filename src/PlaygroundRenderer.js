@@ -1,9 +1,10 @@
-
+/* @flow */
 // mainly copypasted from
 // https://github.com/facebook/relay/blob/master/website-prototyping-tools/RelayPlayground.js
 // ReactDOM.render needed to intercept runtime errors.
 // Also without it, after some errors, internal react state could be broken
 // without ability to restore normal work
+import type { PlaygroundError } from './types';
 
 import React, {Component, PropTypes} from 'react';
 import ReactDOM from 'react-dom';
@@ -13,11 +14,13 @@ class PlaygroundRenderer extends Component {
   static propTypes = {
     children: PropTypes.any,
     onError: PropTypes.func,
-  }
+  };
 
   componentDidMount() {
     this.container_ = document.createElement('div');
-    this.ref_.appendChild(this.container_);
+    if (this.ref_ !== null) {
+      this.ref_.appendChild(this.container_);
+    }
     this.updateTimeoutId_ = defer(this._update);
   }
 
@@ -33,24 +36,39 @@ class PlaygroundRenderer extends Component {
     } catch (e) {} // eslint-disable-line
   }
 
-  _update = () => {
+  ref_: any = null;
+
+  _update: () => void = () => {
     try {
       if (this.props.children) {
         ReactDOM.render(React.Children.only(this.props.children), this.container_);
       }
     } catch (e) {
       if (this.props.onError) {
-        this.props.onError(e);
+        const re = /:\d+:\d+/;
+        const [str] = e.stack.match(re) || [];
+        const [, line] = str ? str.split(':').map((v) => +v) : [];
+
+        const err: PlaygroundError = {
+          line: line - 2,
+          nativeError: e,
+          message: e.message,
+          type: 'runtime',
+        };
+
+        this.props.onError(err);
       }
     }
-  }
+  };
 
-  _setRef = (ref) => {
+  _setRef: (ref: any) => void = (ref) => {
     this.ref_ = ref;
-  }
+  };
 
-  render() {
-    return <div ref={this._setRef} />;
+  render(): ReactElement<any, any, any> {
+    return (
+      <div ref={this._setRef} />
+    );
   }
 }
 

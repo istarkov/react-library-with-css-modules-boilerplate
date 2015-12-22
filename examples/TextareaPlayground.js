@@ -30,7 +30,7 @@ const textareaPlayground = ({
       <div className={styles.component}>
         {
           error
-            ? <pre>{[error.type, error.message, error.error.stack].join('\n')}</pre>
+            ? <pre>{[error.type, error.message, error.nativeError.stack].join('\n')}</pre>
             : <div>{component}</div>
         }
       </div>

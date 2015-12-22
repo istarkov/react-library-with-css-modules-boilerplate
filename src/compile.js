@@ -1,3 +1,6 @@
+/* @flow */
+import type { Scope, CompiledResult } from './types';
+
 import { transform } from 'babel-core';
 import babelPresetEs2015 from 'babel-preset-es2015';
 import babelPresetReact from 'babel-preset-react';
@@ -7,7 +10,7 @@ import babelReactDOMPlugin from './babelPlugins/reactDOM2Return';
 import babelLastExpression from './babelPlugins/lastExpression2Return';
 import sortedIndex from 'lodash/array/sortedIndex';
 
-const babelCompile = ({code, scope}) => { // eslint-disable-line
+const compile: (obj: {code: string; scope: Scope}) => CompiledResult = ({code, scope}) => {
   const codeStr = `({${[...Object.keys(scope)].join(', ')}}) => {\n${code}\n}`;
 
   const {lines} = codeStr
@@ -55,15 +58,19 @@ const babelCompile = ({code, scope}) => { // eslint-disable-line
       component,
     };
   } catch (error) {
+    const re = /:\d+:\d+/;
+    const [str] = error.stack.match(re) || [];
+    const [, line] = str ? str.split(':').map((v) => +v) : [];
+
     return {
       error: {
-        line: error._babel === true ? error.loc.line : undefined,
-        error,
-        message: error.codeFrame || error.message,
+        line: error._babel === true ? error.loc.line - 2 : line - 2,
+        nativeError: error,
+        message: error._babel === true ? 'Syntax Error' : error.message, // error.codeFrame
         type: error._babel === true ? 'syntax' : 'eval',
       },
     };
   }
 };
 
-export default babelCompile;
+export default compile;

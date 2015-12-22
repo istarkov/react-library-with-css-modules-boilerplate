@@ -3,13 +3,9 @@ import cx from 'classnames';
 import compose from 'recompose/compose';
 import defaultProps from 'recompose/defaultProps';
 import withState from 'recompose/withState';
-// import mapPropsOnChange from 'recompose/mapPropsOnChange';
-
 import playground from 'react-babel-playground';
 import codemirrorStyles from './CodeMirrorPlayground.sass';
 import CodeMirror from './CodeMirror';
-// import combineCodeAndLog from './utils/combineCodeAndLog';
-// import Highlight from './Highlight';
 
 const codemirrorPlayground = ({
   styles, // css modules styles
@@ -24,6 +20,7 @@ const codemirrorPlayground = ({
         className={styles.textarea}
         value={code}
         log={log}
+        error={error}
         onChange={onCodeChange}
       />
     </div>
@@ -33,7 +30,7 @@ const codemirrorPlayground = ({
       <div className={styles.component}>
         {
           error
-            ? <pre>{[error.type, error.message, error.error.stack].join('\n')}</pre>
+            ? <pre>{[error.type, error.message, error.nativeError.stack].join('\n')}</pre>
             : <div>{component}</div>
         }
       </div>

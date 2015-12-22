@@ -7,7 +7,9 @@
   },
   "globals": {
     "__DEV__": false,
-    "__DEV_TOOLS__": false
+    "__DEV_TOOLS__": false,
+    "ReactElement": false,
+    "ReactComponent": false,
   },
   "rules": {
     "max-len": [1, 100, 2],
