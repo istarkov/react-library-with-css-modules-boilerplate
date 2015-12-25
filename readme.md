@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/istarkov/react-library-with-css-modules-boilerplate.svg?branch=master)](https://travis-ci.org/istarkov/react-library-with-css-modules-boilerplate)
+
 # Not ready!!!
 
 # Why
