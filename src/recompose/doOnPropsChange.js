@@ -5,7 +5,7 @@ import createHelper from 'recompose/createHelper';
 import createElement from 'recompose/createElement';
 
 const doOnPropsChange = (depdendentPropKeys, callback, BaseComponent) => {
-  const pickDependentProps = props => pick(props, depdendentPropKeys);
+  const pickDependentProps = (props) => pick(props, depdendentPropKeys);
 
   return class extends Component {
     componentWillReceiveProps(nextProps) {

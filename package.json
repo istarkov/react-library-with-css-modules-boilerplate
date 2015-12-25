@@ -8,6 +8,7 @@
     "build:umd": "webpack src/index.js dist/library-boilerplate.js && NODE_ENV=production webpack src/index.js dist/library-boilerplate.min.js",
     "clean": "rimraf lib dist",
     "lint": "eslint src test examples",
+    "flow": "flow check",
     "_prepublish": "npm run lint && npm run test && npm run clean && npm run build && npm run build:umd",
     "start": "babel-node devServer",
     "_test": "NODE_ENV=eee mocha --compilers js:babel/register --recursive"
@@ -46,6 +47,7 @@
     "eslint-plugin-react": "^3.11.3",
     "expect": "^1.11.1",
     "file-loader": "^0.8.5",
+    "flow-bin": "^0.20.1",
     "highlight.js": "^9.0.0",
     "history": "^1.13.1",
     "jsdom": "^7.1.1",
