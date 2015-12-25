@@ -22,4 +22,3 @@ https://gist.github.com/istarkov/e269cca8091dfea71680
   - [ ] doc how to use
 - [ ] markdown babel transform
 - [ ] nice looking gh-pages generator (theme as a base http://orderedlist.com/minimal/)
-
