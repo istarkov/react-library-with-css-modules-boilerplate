@@ -1,7 +1,7 @@
 import path from 'path';
 import webpack from 'webpack';
 
-const createConfig = (callback) => ({
+export default {
   devtool: 'eval',
   entry: [
     'webpack-hot-middleware/client?reload=true',
@@ -17,11 +17,6 @@ const createConfig = (callback) => ({
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
-    function stat() {
-      this.plugin('done', (stats) => {
-        callback(stats.toJson().assetsByChunkName);
-      });
-    },
   ],
   resolve: {
     alias: {
@@ -34,7 +29,11 @@ const createConfig = (callback) => ({
       {
         test: /\.js$/,
         loaders: ['babel'],
-        include: [path.join(__dirname, 'src'), path.join(__dirname, 'examples')],
+        include: [
+          path.join(__dirname, 'src'),
+          path.join(__dirname, 'examples'),
+          path.join(__dirname, 'server'),
+        ],
       },
       {
         test: /\.json$/,
@@ -80,6 +79,4 @@ const createConfig = (callback) => ({
     net: 'empty',
     module: 'empty',
   },
-});
-
-export default createConfig;
+};

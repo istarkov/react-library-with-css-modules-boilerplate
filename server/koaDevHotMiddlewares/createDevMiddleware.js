@@ -5,7 +5,8 @@ const koaDevMiddleware = (compiler, options) => {
 
   return async (ctx, next) => {
     ctx.status = 200;
-    await new Promise(r => webpackDevExpress(ctx.req, ctx.res, r));
+    await new Promise((r) => webpackDevExpress(ctx.req, ctx.res, r));
+    ctx.status = 404;
     await next();
   };
 };
